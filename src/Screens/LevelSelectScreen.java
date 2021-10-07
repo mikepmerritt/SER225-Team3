@@ -65,10 +65,10 @@ public class LevelSelectScreen extends Screen {
 
 		// if down or up is pressed, change menu item "hovered" over (blue square in
 		// front of text will move along with currentMenuItemHovered changing)
-		if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) {
+		if ((Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) && keyTimer.isTimeUp()) {
 			keyTimer.reset();
 			currentLevelHovered++;
-		} else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp()) {
+		} else if ((Keyboard.isKeyDown(Key.UP) || Keyboard.isKeyDown(Key.W)) && keyTimer.isTimeUp()) {
 			keyTimer.reset();
 			currentLevelHovered--;
 		}

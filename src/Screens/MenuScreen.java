@@ -67,12 +67,18 @@ public class MenuScreen extends Screen {
     	background.update(null);
 
         // if down or up is pressed, change menu item "hovered" over (blue square in front of text will move along with currentMenuItemHovered changing)
-        if (Keyboard.isKeyDown(Key.DOWN) && keyTimer.isTimeUp()) {
+        if ((Keyboard.isKeyDown(Key.DOWN) || Keyboard.isKeyDown(Key.S)) && keyTimer.isTimeUp()) {
             keyTimer.reset();
-            currentMenuItemHovered++;
-        } else if (Keyboard.isKeyDown(Key.UP) && keyTimer.isTimeUp()) {
+            if(currentMenuItemHovered != 2 && currentMenuItemHovered != 5) { currentMenuItemHovered++; }
+        } else if ((Keyboard.isKeyDown(Key.UP) || Keyboard.isKeyDown(Key.W)) && keyTimer.isTimeUp()) {
             keyTimer.reset();
-            currentMenuItemHovered--;
+            if(currentMenuItemHovered != 3 && currentMenuItemHovered != 0) { currentMenuItemHovered--; }
+        } else if ((Keyboard.isKeyDown(Key.LEFT) || Keyboard.isKeyDown(Key.A)) && keyTimer.isTimeUp()) {
+            keyTimer.reset();
+            if(currentMenuItemHovered >= 3) { currentMenuItemHovered -= 3; }
+        } else if ((Keyboard.isKeyDown(Key.RIGHT) || Keyboard.isKeyDown(Key.D)) && keyTimer.isTimeUp()) {
+            keyTimer.reset();
+            if(currentMenuItemHovered < 3) { currentMenuItemHovered += 3; }
         }
 
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
