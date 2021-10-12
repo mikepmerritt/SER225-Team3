@@ -32,6 +32,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 	protected Stopwatch screenTimer = new Stopwatch();
 	protected LevelClearedScreen levelClearedScreen;
 	protected LevelLoseScreen levelLoseScreen;
+	protected FinalLevelClearedScreen finalClearScreen;
 	protected SpriteFont pauseLabel;
 	protected LevelSelectScreen levelSelectScreen;
 	protected int levelNum = 0;
@@ -127,8 +128,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			break;
 		// if level has been completed, bring up level cleared screen
 		case LEVEL_COMPLETED:
-			levelClearedScreen = new LevelClearedScreen();
-			levelClearedScreen.initialize();
+			// Check to see if the level number is less than the index of the last level
+			// In this case, the last level is 5, which has an index of 4.
+			if(levelNum < 4)
+			{
+				levelClearedScreen = new LevelClearedScreen();
+				levelClearedScreen.initialize();
+			}
+			// If it is the final level, use the final clear screen instead.
+			else
+			{
+				finalClearScreen = new FinalLevelClearedScreen();
+				finalClearScreen.initialize();
+			}
 			screenTimer.setWaitTime(2500);
 			playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
 			break;
@@ -194,7 +206,17 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			player.draw(graphicsHandler);
 			break;
 		case LEVEL_WIN_MESSAGE:
-			levelClearedScreen.draw(graphicsHandler);
+			// Check to see if the level number is less than the index of the last level
+			// In this case, the last level is 5, which has an index of 4.
+			if(levelNum < 4)
+			{
+				levelClearedScreen.draw(graphicsHandler);
+			}
+			// If it is the final level, draw the final clear screen instead.
+			else
+			{
+				finalClearScreen.draw(graphicsHandler);
+			}
 			break;
 		case LEVEL_LOSE_MESSAGE:
 			levelLoseScreen.draw(graphicsHandler);
