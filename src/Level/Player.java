@@ -355,23 +355,33 @@ public abstract class Player extends GameObject {
     }
 
     @Override
-    public void onEndCollisionCheckX(boolean hasCollided, Direction direction) {
-    	// if the player collides with the coordinates specified below, it either stops (beginning of level) or goes back to the start (end of level)
-    	if (direction == Direction.LEFT || direction == Direction.RIGHT) {
-    		if (x < 0) {
+    public void onEndCollisionCheckX(boolean hasCollided, Direction direction) 
+    {
+    	// if the player collides with the coordinates specified below, the avatar stops at the specified coordinates below (beginning and end of the level)
+    	if (direction == Direction.LEFT || direction == Direction.RIGHT) 
+    	{
+    		if (x < 0) 
+    		{
     			hasCollided = true;
     			momentumX = 0;
     			setX(0);
     		}
-    		else if (x > 1700) {
-    			hasCollided = true;
-    			momentumX = 0;
-    			setX(0);
-    			setY(0);
+    		
+    		if (levelState == LevelState.RUNNING)
+    		{
+    			if (x > 1560) 
+    			{
+        			hasCollided = true;
+        			momentumX = 0;
+        			setX(1560);
+    			}
     		}
     	}
-    	if (hasCollided && MapTileCollisionHandler.lastCollidedTileX != null) {
-    		if (MapTileCollisionHandler.lastCollidedTileX.getTileType() == TileType.LETHAL) {
+    	
+    	if (hasCollided && MapTileCollisionHandler.lastCollidedTileX != null) 
+    	{
+    		if (MapTileCollisionHandler.lastCollidedTileX.getTileType() == TileType.LETHAL) 
+    		{
     			levelState = LevelState.PLAYER_DEAD;
     		}
     	}
