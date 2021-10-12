@@ -267,7 +267,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 
 	public void nextLevel() {
 		levelNum++;
-		initialize();
+		// Since there are only 5 levels, if the level number is 5 or higher, 
+		// all levels have been completed, so the main menu is loaded instead of the next level
+		if (levelNum < 5) {
+			initialize();
+		}
+		else {
+			goBackToMenu();
+		}
 	}
 
 	public int getLevelNum() {
