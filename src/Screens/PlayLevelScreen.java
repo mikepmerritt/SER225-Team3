@@ -40,6 +40,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 	private SpriteFont instruction2Label;
 	private SpriteFont instruction3Label;
 	private SpriteFont instruction4Label;
+	private SpriteFont instructions5Label;
+	private SpriteFont instructions6Label;
 	private SpriteFont returnInstructionLabel;
 	protected OptionsScreen optionsScreen;
 
@@ -71,14 +73,12 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		pauseLabel = new SpriteFont("Pause", 350, 250, "Comic Sans", 30, Color.white);
 		
 
-		instructionLabel = new SpriteFont("To JUMP: UP arrow key, or 'W', or SPACEBAR", 130, 140, "Times New Roman", 20,
-				Color.white);
-		instruction2Label = new SpriteFont("To MOVE LEFT: LEFT arrow key, or 'A'", 130, 170, "Times New Roman", 20,
-				Color.white);
-		instruction3Label = new SpriteFont("To MOVE RIGHT: RIGHT arrow key, or 'D'", 130, 220, "Times New Roman", 20,
-				Color.white);
-		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20,
-				Color.white);
+		instructionLabel = new SpriteFont("To JUMP: UP arrow key, or 'W', or SPACEBAR", 130, 140, "Times New Roman", 20, Color.white);
+		instruction2Label = new SpriteFont("To MOVE LEFT: LEFT arrow key, or 'A'", 130, 180, "Times New Roman", 20, Color.white);
+		instruction3Label = new SpriteFont("To MOVE RIGHT: RIGHT arrow key, or 'D'", 130, 220, "Times New Roman", 20, Color.white);
+		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20, Color.white);
+		instructions5Label = new SpriteFont("To ATTACK: E key", 130, 300, "Times New Roman", 20, Color.white);
+        instructions6Label = new SpriteFont("To INTERACT: F key", 130, 340, "Times New Roman", 20, Color.white);
 		returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
 		instructionLabel.setOutlineColor(Color.white);
 		instructionLabel.setOutlineThickness(2.0f);
@@ -219,6 +219,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			instruction2Label.draw(graphicsHandler);
 			instruction3Label.draw(graphicsHandler);
 			instruction4Label.draw(graphicsHandler);
+			instructions5Label.draw(graphicsHandler);
+			instructions6Label.draw(graphicsHandler);
 			returnInstructionLabel.draw(graphicsHandler);
 
 			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
