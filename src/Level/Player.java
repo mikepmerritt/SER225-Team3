@@ -252,13 +252,13 @@ public abstract class Player extends GameObject {
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
             // player is set to be in air and then player is sent into the air
-            jumpTimer.setWaitTime(150);
+            jumpTimer.setWaitTime(120);
             jumpTimer.reset();
             airGroundState = AirGroundState.AIR;
             jumpForce = jumpHeight/2 + 2;
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
+                jumpForce -= jumpDegrade/2;
                 if (jumpForce < 0) {
                     jumpForce = 0;
                 }
@@ -268,7 +268,7 @@ public abstract class Player extends GameObject {
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
         	if((Keyboard.isKeyDown(spaceKey) || Keyboard.isKeyDown(JUMP_KEY) || Keyboard.isKeyDown(upKey)) && jumpTimer.isTimeUp() && canJump) {
-        		jumpForce = jumpHeight;
+        		jumpForce = jumpHeight-1;
         		canJump = false;
         	}
             if (jumpForce > 0) {
