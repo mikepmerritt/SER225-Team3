@@ -33,9 +33,13 @@ public class FinalLevelClearedScreen extends Screen
     }
 
     // Draws the green background and white message to the screen.
+    @Override
     public void draw(GraphicsHandler graphicsHandler) 
     {
         graphicsHandler.drawFilledRectangle(0, 0, Config.WIDTH, Config.HEIGHT, backgroundColor);
         winMessage.draw(graphicsHandler);
     }
+
+	@Override
+	public void muteVolume() { }
 }

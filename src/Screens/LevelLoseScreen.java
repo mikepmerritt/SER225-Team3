@@ -49,9 +49,14 @@ public class LevelLoseScreen extends Screen {
 		}
 	}
 
+	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		graphicsHandler.drawFilledRectangle(0, 0, Config.WIDTH, Config.HEIGHT,Color.black);
 		loseMessage.draw(graphicsHandler);
 		instructions.draw(graphicsHandler);
 	}
+
+
+	@Override
+	public void muteVolume() { }
 }

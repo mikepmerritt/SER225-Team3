@@ -2,7 +2,10 @@ package Screens;
 
 import java.awt.Color;
 
+import Engine.Config;
+import Engine.GamePanel;
 import Engine.GraphicsHandler;
+import Engine.ImageLoader;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -10,6 +13,8 @@ import Engine.Screen;
 import Engine.ScreenManager;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.ImageEffect;
+import GameObject.Sprite;
 import Level.Map;
 import Level.Player;
 import Level.PlayerListener;
@@ -25,6 +30,7 @@ import Utils.Stopwatch;
 // This class is for when the platformer game is actually being played
 public class PlayLevelScreen extends Screen implements PlayerListener {
 	private KeyLocker keyLocker = new KeyLocker();
+	private Stopwatch keyTimer = new Stopwatch();
 	protected ScreenCoordinator screenCoordinator;
 	protected Map map;
 	protected Player player;
@@ -44,6 +50,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 	private SpriteFont instructions5Label;
 	private SpriteFont instructions6Label;
 	private SpriteFont returnInstructionLabel;
+	private Sprite soundSprite;
 	protected OptionsScreen optionsScreen;
 
 	public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
@@ -90,6 +97,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		instruction4Label.setOutlineColor(Color.white);
 		instruction4Label.setOutlineThickness(2.0f);
 		
+		soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 5, 532, 0.25f, ImageEffect.NONE);
 		
 		this.player = getCat();
 		//this.player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
@@ -97,6 +105,7 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		this.player.addListener(this);
 		this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 
+		keyTimer.setWaitTime(200);
 	}
 
 	public void update() {
@@ -193,8 +202,32 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			break;
 
 		}
+		
+		/*
+		 * As of 10/26/21, OptionsScreen.java and PlayLevelScreen.java share the same
+		 * screen. If user is in the play level screen, the "M" key is used to mute. 
+		 * If user is in options screen, the mute feature is done by selecting the mute 
+		 * option.  
+		 */
+		if ((Keyboard.isKeyDown(Key.M) && keyTimer.isTimeUp()))
+        {
+        	keyTimer.reset();
+        	muteVolume();
+        } 
+		
+		/*
+		 * As of 10/26/21, OptionsScreen.java and PlayLevelScreen.java share the same
+		 * screen. If user is in the play level screen, the sound icon appears in 
+		 * left-bottom corner. If user is in the options screen, the sound icon will
+		 * appear under the "Volume Control" label.
+		 */
+		if (this.screenCoordinator.getGameState() == GameState.OPTIONS)
+        {
+        	soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 190, 170, 0.25f, ImageEffect.NONE);
+        }
 	}
 
+	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		// based on screen state, draw appropriate graphics
 		switch (playLevelScreenState) {
@@ -249,7 +282,32 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 					new Color(0, 0, 0, 100));
 			break;
 		}
+		
+		soundSprite.draw(graphicsHandler);
 	}
+	
+	/*
+     * Is called from the update function. Mutes the sound if the volume gain
+     * is more than one and unmutes if it equals 0 (muted). Changes the icon
+     * depending if sound is muted or not. Persistent across screens.
+     */
+	@Override
+	public void muteVolume()
+    {
+		if (Config.VOLUME > 0)
+        {
+        	GamePanel.setVolumeMute();
+        	Config.VOLUME_SPRITE = "Mute.png";
+        	soundSprite.setImage(Config.VOLUME_SPRITE);
+        }
+        else if (Config.VOLUME == 0)
+        {
+        	GamePanel.setVolumeMed();
+        	Config.VOLUME_SPRITE = "Unmute.png";
+        	soundSprite.setImage(Config.VOLUME_SPRITE);
+        }
+    }
+
 
 	public PlayLevelScreenState getPlayLevelScreenState() {
 		return playLevelScreenState;
@@ -316,13 +374,13 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 	}
 	public Cat getCat() {
 		
-		if (catNum == 1) {
-			return new Cat("Cat.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-		} else if (catNum == 2) {
+		if (catNum == 0) {
+			return new Cat("CatGreen.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+		} else if (catNum == 1) {
 	
 			return new Cat("CatBlue.png", map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 		}  else {
-			return new Cat("CatGreen.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+			return new Cat("Cat.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 		}
 		
 	}

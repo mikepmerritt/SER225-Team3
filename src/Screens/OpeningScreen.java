@@ -4,14 +4,19 @@ import java.awt.Color;
 import java.util.HashMap;
 
 import Builders.FrameBuilder;
+import Engine.Config;
+import Engine.GamePanel;
 import Engine.GraphicsHandler;
 import Engine.ImageLoader;
+import Engine.Key;
+import Engine.Keyboard;
 import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import GameObject.AnimatedSprite;
 import GameObject.Frame;
 import GameObject.ImageEffect;
+import GameObject.Sprite;
 import GameObject.SpriteSheet;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
@@ -29,8 +34,9 @@ public class OpeningScreen extends Screen {
 	private SpriteFont story4;
 	private SpriteFont story5;
 	private SpriteFont story6;
+	private Sprite soundSprite;
 	
-	
+	private Stopwatch keyTimer = new Stopwatch();
 	
 	public OpeningScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
@@ -68,10 +74,14 @@ public class OpeningScreen extends Screen {
       	story6.setOutlineColor(Color.black);
         story6.setOutlineThickness(3);
         
+        soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 5, 532, 0.25f, ImageEffect.NONE);
+        
 		cat = new AnimatedSprite(0, 0, getCatAnimations(catSpriteSheet), "STAND_RIGHT");
 		catFirstMovement = new Stopwatch();
 		catFirstMovement.setWaitTime(10000);
 		cat.setCurrentAnimationName("WALK_RIGHT");
+		
+		keyTimer.setWaitTime(200);
 				
 	}
 
@@ -86,7 +96,11 @@ public class OpeningScreen extends Screen {
 		}
 		cat.update();
 
-		
+		if ((Keyboard.isKeyDown(Key.M) && keyTimer.isTimeUp()))
+        {
+        	keyTimer.reset();
+        	muteVolume();
+        }
 	}
 
 	@Override
@@ -100,11 +114,30 @@ public class OpeningScreen extends Screen {
 		story4.draw(graphicsHandler);
 		story5.draw(graphicsHandler);
 		story6.draw(graphicsHandler);
-		
-		
+		soundSprite.draw(graphicsHandler);
 	}
 	
-	
+	/*
+     * Is called from the update function. Mutes the sound if the volume gain
+     * is more than one and unmutes if it equals 0 (muted). Changes the icon
+     * depending if sound is muted or not. Persistent across screens.
+     */
+	@Override
+	public void muteVolume()
+    {
+		if (Config.VOLUME > 0)
+        {
+        	GamePanel.setVolumeMute();
+        	Config.VOLUME_SPRITE = "Mute.png";
+        	soundSprite.setImage(Config.VOLUME_SPRITE);
+        }
+        else if (Config.VOLUME == 0)
+        {
+        	GamePanel.setVolumeMed();
+        	Config.VOLUME_SPRITE = "Unmute.png";
+        	soundSprite.setImage(Config.VOLUME_SPRITE);
+        }
+    }
 	
 	public HashMap<String, Frame[]> getCatAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{

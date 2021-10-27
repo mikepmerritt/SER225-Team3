@@ -118,26 +118,42 @@ public class GamePanel extends JPanel {
 		
 	}
 
-	public static void setVolumeLow() {
-		
-		setVolume(.5);
+	/*
+	 * The following setVolume functions are utilized to mute the in-game sound in
+	 * every screen class bar FinalLevelClearedScreen.java, LevelClearedScreen.java,
+	 * LevelLoseScreen. These functions are called in the update function of each 
+	 * screen.
+	 */
+	public static void setVolumeMute()
+	{
+		Config.VOLUME = 0;
+		setVolume(Config.VOLUME);
+	}
+	
+	public static void setVolumeLow() 
+	{
+		Config.VOLUME = 0.5;
+		setVolume(Config.VOLUME);
 	}
 
-	public static void setVolumeMed() {
-		setVolume(1);
-		
+	public static void setVolumeMed() 
+	{
+		Config.VOLUME = 1;
+		setVolume(Config.VOLUME);
 	}
 
-	public static void setVolumeHigh() {
-		setVolume(2);
-		
+	public static void setVolumeHigh() 
+	{
+		Config.VOLUME = 2;
+		setVolume(Config.VOLUME);
 	}
 
-	// this starts the timer (the game loop is started here
-	public void startGame() {
+	// this starts the timer. The game loop is started here.
+	public void startGame() 
+	{
 		timer.start();
 
-		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav",1);
+		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav", Config.VOLUME);
 	}
 
 	public ScreenManager getScreenManager() {

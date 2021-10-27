@@ -87,4 +87,7 @@ public class ScreenCoordinator extends Screen {
 		// call the draw method for the currentScreen
 		currentScreen.draw(graphicsHandler);
 	}
+
+	@Override
+	public void muteVolume() { }
 }

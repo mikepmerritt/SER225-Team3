@@ -353,11 +353,17 @@ public abstract class Player extends GameObject {
         	keyLocker.unlockKey(attackKey);
         }
     }
-
+    
+    /*
+     * Establishes player level limits; pseudo level boundaries. While the level is not
+     * completed, the player cannot move under or over the x-values stated below. If the
+     * player completes the level, the player is allowed to pass through right level 
+     * limit. The player is scripted to walk off the right boundary of the level to 
+     * progress to the next level.
+     */
     @Override
     public void onEndCollisionCheckX(boolean hasCollided, Direction direction) 
     {
-    	// if the player collides with the coordinates specified below, the avatar stops at the specified coordinates below (beginning and end of the level)
     	if (direction == Direction.LEFT || direction == Direction.RIGHT) 
     	{
     		if (x < 0) 
