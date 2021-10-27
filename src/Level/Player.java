@@ -267,7 +267,7 @@ public abstract class Player extends GameObject {
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
-        	if(Keyboard.isKeyDown(spaceKey) && jumpTimer.isTimeUp() && canJump) {
+        	if((Keyboard.isKeyDown(spaceKey) || Keyboard.isKeyDown(JUMP_KEY) || Keyboard.isKeyDown(upKey)) && jumpTimer.isTimeUp() && canJump) {
         		jumpForce = jumpHeight;
         		canJump = false;
         	}
