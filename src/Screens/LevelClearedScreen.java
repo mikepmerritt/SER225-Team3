@@ -25,10 +25,13 @@ public class LevelClearedScreen extends Screen {
 
     }
 
-    
+    @Override
     public void draw(GraphicsHandler graphicsHandler) {
         // paint entire screen black and dislpay level cleared text
         graphicsHandler.drawFilledRectangle(0, 0, Config.WIDTH, Config.HEIGHT, Color.black);
         winMessage.draw(graphicsHandler);
     }
+
+	@Override
+	public void muteVolume() { }
 }

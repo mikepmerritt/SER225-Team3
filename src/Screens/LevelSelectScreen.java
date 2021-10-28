@@ -3,6 +3,8 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.ImageEffect;
+import GameObject.Sprite;
 import Level.Map;
 import Maps.LevelSelectMap;
 import Maps.TitleScreenMap;
@@ -51,7 +53,7 @@ public class LevelSelectScreen extends Screen {
 		levelFive = new SpriteFont("Level Five", 200, 420, "Comic Sans", 30, new Color(49, 207, 240));
 		levelFive.setOutlineColor(Color.black);
 		levelFive.setOutlineThickness(3);
-
+		
 		background = new LevelSelectMap();
 		background.setAdjustCamera(false);
 		keyTimer.setWaitTime(200);
@@ -59,6 +61,7 @@ public class LevelSelectScreen extends Screen {
 		keyLocker.lockKey(Key.SPACE);
 	}
 
+	@Override
 	public void update() {
 		// update background map (to play tile animations)
 		background.update(null);
@@ -156,9 +159,9 @@ public class LevelSelectScreen extends Screen {
 				playLevelScreen.initialize();
 			}
 		}
-
 	}
 
+	@Override
 	public void draw(GraphicsHandler graphicsHandler) {
 		background.draw(graphicsHandler);
 		levelOne.draw(graphicsHandler);
@@ -170,6 +173,9 @@ public class LevelSelectScreen extends Screen {
 		graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20,
 				new Color(49, 207, 240), Color.black, 2);
 	}
+	
+	@Override
+	public void muteVolume() { }
 
 	public int getLevelSelected() {
 		return LevelSelected;

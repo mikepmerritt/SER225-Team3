@@ -3,6 +3,8 @@ package Screens;
 import Engine.*;
 import Game.GameState;
 import Game.ScreenCoordinator;
+import GameObject.ImageEffect;
+import GameObject.Sprite;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
@@ -22,6 +24,7 @@ public class MenuScreen extends Screen {
     protected SpriteFont levelSelect;
     protected SpriteFont extraInfo;
     protected SpriteFont opening;
+    protected Sprite soundSprite;
     protected Map background;
     protected SpriteFont options;
     protected Stopwatch keyTimer = new Stopwatch();
@@ -53,7 +56,8 @@ public class MenuScreen extends Screen {
         options = new SpriteFont("OPTIONS", 350, 300, "Comic Sans", 30, new Color(49,207,240));
         options.setOutlineColor(Color.black);
         options.setOutlineThickness(3);
-
+        
+        soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 5, 532, 0.25f, ImageEffect.NONE);
         
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
@@ -62,6 +66,7 @@ public class MenuScreen extends Screen {
         keyLocker.lockKey(Key.SPACE);
     }
 
+    @Override
     public void update() {
         // update background map (to play tile animations)
     	background.update(null);
@@ -80,7 +85,13 @@ public class MenuScreen extends Screen {
             keyTimer.reset();
             if(currentMenuItemHovered < 3) { currentMenuItemHovered += 3; }
         }
-
+        
+        if ((Keyboard.isKeyDown(Key.M) && keyTimer.isTimeUp()))
+        {
+        	keyTimer.reset();
+        	muteVolume();
+        }
+        
         // if down is pressed on last menu item or up is pressed on first menu item, "loop" the selection back around to the beginning/end
         if (currentMenuItemHovered > 5) {
             currentMenuItemHovered = 0;
@@ -173,18 +184,43 @@ public class MenuScreen extends Screen {
         }
     }
 
+    @Override
     public void draw(GraphicsHandler graphicsHandler) {
-    	 background.draw(graphicsHandler);
+    	background.draw(graphicsHandler);
         playGame.draw(graphicsHandler);
         instructions.draw(graphicsHandler);
         credits.draw(graphicsHandler);
         levelSelect.draw(graphicsHandler);
         opening.draw(graphicsHandler);
         options.draw(graphicsHandler);
+        soundSprite.draw(graphicsHandler);
+        
         graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
     }
 
     public int getMenuItemSelected() {
         return menuItemSelected;
+    }
+    
+    /*
+     * Is called from the update function. Mutes the sound if the volume gain
+     * is more than one and unmutes if it equals 0 (muted). Changes the icon
+     * depending if sound is muted or not. Persistent across screens.
+     */
+    @Override
+    public void muteVolume()
+    {
+    	if (Config.VOLUME > 0)
+        {
+        	GamePanel.setVolumeMute();
+        	Config.VOLUME_SPRITE = "Mute.png";
+        	soundSprite.setImage(Config.VOLUME_SPRITE);
+        }
+        else if (Config.VOLUME == 0)
+        {
+        	GamePanel.setVolumeMed();
+        	Config.VOLUME_SPRITE = "Unmute.png";
+        	soundSprite.setImage(Config.VOLUME_SPRITE);
+        }
     }
 }
