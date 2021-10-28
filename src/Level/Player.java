@@ -270,8 +270,6 @@ public abstract class Player extends GameObject {
         	if((Keyboard.isKeyDown(spaceKey) || Keyboard.isKeyDown(JUMP_KEY) || Keyboard.isKeyDown(upKey)) && jumpTimer.isTimeUp() && canJump) {
         		jumpForce = jumpHeight-1;
         		canJump = false;
-        	} else {
-        		canJump = false;
         	}
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
