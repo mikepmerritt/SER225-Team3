@@ -9,6 +9,7 @@ import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
+import Utils.Stopwatch;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,10 @@ public abstract class Player extends GameObject {
     protected Key downKey = Key.S;
     protected Key spaceKey = Key.SPACE;
     protected Key attackKey = Key.E;
+    
+    // jump mechanics
+    protected Stopwatch jumpTimer = new Stopwatch();
+    protected boolean canJump = true;
 
     // if true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
@@ -247,11 +252,13 @@ public abstract class Player extends GameObject {
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
             // player is set to be in air and then player is sent into the air
+            jumpTimer.setWaitTime(120);
+            jumpTimer.reset();
             airGroundState = AirGroundState.AIR;
-            jumpForce = jumpHeight;
+            jumpForce = jumpHeight/2 + 2;
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
+                jumpForce -= jumpDegrade/2;
                 if (jumpForce < 0) {
                     jumpForce = 0;
                 }
@@ -260,6 +267,10 @@ public abstract class Player extends GameObject {
 
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
+        	if((Keyboard.isKeyDown(spaceKey) || Keyboard.isKeyDown(JUMP_KEY) || Keyboard.isKeyDown(upKey)) && jumpTimer.isTimeUp() && canJump) {
+        		jumpForce = jumpHeight-1;
+        		canJump = false;
+        	}
             if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;
@@ -291,7 +302,7 @@ public abstract class Player extends GameObject {
         // if player last frame was in air and this frame is now on ground, player enters STANDING state
         else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
             playerState = PlayerState.STANDING;
-            
+            canJump = true;
         }
     }
     
