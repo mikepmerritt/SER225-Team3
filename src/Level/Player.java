@@ -66,6 +66,8 @@ public abstract class Player extends GameObject {
     // jump mechanics
     protected Stopwatch jumpTimer = new Stopwatch();
     protected boolean canJump = true;
+    // attack mechanics
+    protected boolean canShoot = true;
 
     // if true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
@@ -329,11 +331,15 @@ public abstract class Player extends GameObject {
                 currentProjectile = projectile;
 
                 // add projectile enemy to the map for it to offically spawn in the level
-                map.addEnemy(projectile);
+                if(canShoot) {
+                	map.addEnemy(projectile);
+                	canShoot = false;
+                }
                 
                 //is key up
                 if (Keyboard.isKeyUp(attackKey)) {
                 	playerState = PlayerState.STANDING;
+                	canShoot = true;
                 }
             }
     }
