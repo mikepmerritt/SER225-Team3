@@ -313,6 +313,16 @@ public abstract class Player extends GameObject {
     	if (playerState == PlayerState.ATTACKING) {
                 // define where projectile will spawn on map (x location) relative to cat's location
                 // and define its movement speed
+                
+                //Checks if you're walking before attacking and fixes the cat sprite animation to go back to standing.
+                if(currentAnimationName == "WALK_RIGHT"){
+                    currentAnimationName = "STAND_RIGHT";
+                }
+
+                if(currentAnimationName == "WALK_LEFT"){
+                    currentAnimationName = "STAND_LEFT";
+                }
+                
                 int attackX;
                 float movementSpeed;
                 if (facingDirection == Direction.RIGHT) {
