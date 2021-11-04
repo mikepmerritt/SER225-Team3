@@ -288,8 +288,10 @@ public abstract class Player extends GameObject {
 
             // allows you to move left and right while in the air
             if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(leftKey)) {
+                facingDirection = Direction.LEFT;
                 moveAmountX -= walkSpeed;
             } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey)) {
+                facingDirection = Direction.RIGHT;
                 moveAmountX += walkSpeed;
             }
 
