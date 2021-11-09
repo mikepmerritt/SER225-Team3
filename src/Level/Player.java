@@ -9,6 +9,7 @@ import GameObject.SpriteSheet;
 import Utils.AirGroundState;
 import Utils.Direction;
 import Utils.Point;
+import Utils.Stopwatch;
 
 import java.util.ArrayList;
 
@@ -60,6 +61,10 @@ public abstract class Player extends GameObject
     protected Key downKey = Key.S;
     protected Key spaceKey = Key.SPACE;
     protected Key attackKey = Key.E;
+    
+    // jump mechanics
+    protected Stopwatch jumpTimer = new Stopwatch();
+    protected boolean canJump = true;
 
     // If true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
@@ -263,27 +268,27 @@ public abstract class Player extends GameObject
             // Sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
-            // Player is set to be in air and then player is sent into the air
+            // player is set to be in air and then player is sent into the air
+            jumpTimer.setWaitTime(120);
+            jumpTimer.reset();
             airGroundState = AirGroundState.AIR;
-            jumpForce = jumpHeight;
-            
-            if (jumpForce > 0) 
-            {
+            jumpForce = jumpHeight/2 + 2;
+            if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
-                jumpForce -= jumpDegrade;
-                
-                if (jumpForce < 0) 
-                {
+                jumpForce -= jumpDegrade/2;
+                if (jumpForce < 0) {
                     jumpForce = 0;
                 }
             }
         }
 
-        // If player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
-        else if (airGroundState == AirGroundState.AIR) 
-        {
-            if (jumpForce > 0) 
-            {
+        // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
+        else if (airGroundState == AirGroundState.AIR) {
+        	if((Keyboard.isKeyDown(spaceKey) || Keyboard.isKeyDown(JUMP_KEY) || Keyboard.isKeyDown(upKey)) && jumpTimer.isTimeUp() && canJump) {
+        		jumpForce = jumpHeight-1;
+        		canJump = false;
+        	}
+            if (jumpForce > 0) {
                 moveAmountY -= jumpForce;
                 jumpForce -= jumpDegrade;
                 
@@ -324,6 +329,7 @@ public abstract class Player extends GameObject
         else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) 
         {
             playerState = PlayerState.STANDING;
+            canJump = true;
         }
     }
     
