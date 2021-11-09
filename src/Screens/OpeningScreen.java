@@ -21,12 +21,11 @@ import GameObject.SpriteSheet;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
 
-public class OpeningScreen extends Screen {
-	
-	
-	private AnimatedSprite cat;
-	private Stopwatch catFirstMovement;
+public class OpeningScreen extends Screen 
+{
 	private ScreenCoordinator screenCoordinator;
+	
+	private Stopwatch catFirstMovement;
 	private SpriteFont story;
 	private SpriteFont story1;
 	private SpriteFont story2;
@@ -34,17 +33,25 @@ public class OpeningScreen extends Screen {
 	private SpriteFont story4;
 	private SpriteFont story5;
 	private SpriteFont story6;
+	private SpriteFont playInstructionLabel;
 	private Sprite soundSprite;
+	
+	private AnimatedSprite cat;
 	
 	private Stopwatch keyTimer = new Stopwatch();
 	
-	public OpeningScreen(ScreenCoordinator screenCoordinator) {
+	public OpeningScreen(ScreenCoordinator screenCoordinator) 
+	{
         this.screenCoordinator = screenCoordinator;
     }
 
 	@Override
-	public void initialize() {
+	public void initialize() 
+	{
 		SpriteSheet catSpriteSheet = new SpriteSheet(ImageLoader.load("Cat.png"), 24, 24);
+		
+		catFirstMovement = new Stopwatch();
+		catFirstMovement.setWaitTime(10000);
 		
 		story = new SpriteFont("CAT NEEDS YOUR HELP!", 55, 100, "Comic Sans", 60, new Color(255, 0, 0));
 		story.setOutlineColor(Color.black);
@@ -74,28 +81,36 @@ public class OpeningScreen extends Screen {
       	story6.setOutlineColor(Color.black);
         story6.setOutlineThickness(3);
         
-        soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 5, 532, 0.25f, ImageEffect.NONE);
+        playInstructionLabel = new SpriteFont("Press SPACE to play", 5, 560, "Times New Roman", 30, Color.white);
+        
+        soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 270, 532, 0.25f, ImageEffect.NONE);
         
 		cat = new AnimatedSprite(0, 0, getCatAnimations(catSpriteSheet), "STAND_RIGHT");
-		catFirstMovement = new Stopwatch();
-		catFirstMovement.setWaitTime(10000);
 		cat.setCurrentAnimationName("WALK_RIGHT");
 		
 		keyTimer.setWaitTime(200);
-				
 	}
 
 	@Override
-	public void update() {
-		if(catFirstMovement.isTimeUp()) {
+	public void update() 
+	{
+		if(catFirstMovement.isTimeUp()) 
+		{
 			cat.setCurrentAnimationName("STAND_RIGHT");
-			screenCoordinator.setGameState(GameState.MENU);
 		}
-		else {
+		else 
+		{
 			cat.moveRight(1);
 		}
+		
 		cat.update();
 
+		if ((Keyboard.isKeyDown(Key.SPACE) && keyTimer.isTimeUp()))
+        {
+        	keyTimer.reset();
+        	screenCoordinator.setGameState(GameState.LEVEL);
+        }
+		
 		if ((Keyboard.isKeyDown(Key.M) && keyTimer.isTimeUp()))
         {
         	keyTimer.reset();
@@ -104,8 +119,8 @@ public class OpeningScreen extends Screen {
 	}
 
 	@Override
-	public void draw(GraphicsHandler graphicsHandler) {
-		// TODO Auto-generated method stub
+	public void draw(GraphicsHandler graphicsHandler) 
+	{
 		cat.draw(graphicsHandler);
 		story.draw(graphicsHandler);
 		story1.draw(graphicsHandler);
@@ -114,6 +129,7 @@ public class OpeningScreen extends Screen {
 		story4.draw(graphicsHandler);
 		story5.draw(graphicsHandler);
 		story6.draw(graphicsHandler);
+		playInstructionLabel.draw(graphicsHandler);
 		soundSprite.draw(graphicsHandler);
 	}
 	
@@ -139,7 +155,8 @@ public class OpeningScreen extends Screen {
         }
     }
 	
-	public HashMap<String, Frame[]> getCatAnimations(SpriteSheet spriteSheet) {
+	public HashMap<String, Frame[]> getCatAnimations(SpriteSheet spriteSheet) 
+	{
         return new HashMap<String, Frame[]>() {{
             put("STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0), 0)
@@ -271,6 +288,4 @@ public class OpeningScreen extends Screen {
             });
         }};
     }
-
-
 }

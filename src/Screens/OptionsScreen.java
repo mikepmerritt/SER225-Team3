@@ -96,7 +96,7 @@ public class OptionsScreen extends Screen
 		playerOrange.setOutlineColor(Color.black);
 		playerOrange.setOutlineThickness(2.0f);
 		
-		returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
+		returnInstructionLabel = new SpriteFont("Press X to return to the menu", 5, 560, "Times New Roman", 30, Color.white);
 		returnInstructionLabel.setOutlineColor(Color.white);
 		returnInstructionLabel.setOutlineThickness(2.0f);
 		

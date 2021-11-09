@@ -28,46 +28,54 @@ import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
 
 // This class is for when the platformer game is actually being played
-public class PlayLevelScreen extends Screen implements PlayerListener {
-	private KeyLocker keyLocker = new KeyLocker();
-	private Stopwatch keyTimer = new Stopwatch();
+public class PlayLevelScreen extends Screen implements PlayerListener 
+{
 	protected ScreenCoordinator screenCoordinator;
-	protected Map map;
-	protected Player player;
 	protected PlayLevelScreenState playLevelScreenState;
-	protected Stopwatch screenTimer = new Stopwatch();
-	protected LevelClearedScreen levelClearedScreen;
-	protected LevelLoseScreen levelLoseScreen;
-	protected FinalLevelClearedScreen finalClearScreen;
-	protected SpriteFont pauseLabel;
+	
+	protected Map map;
+	
 	protected LevelSelectScreen levelSelectScreen;
-	protected int levelNum = 0;
-	protected int catNum = 0;
+	protected OptionsScreen optionsScreen;
+	
+	private SpriteFont pauseLabel;
 	private SpriteFont instructionLabel;
 	private SpriteFont instruction2Label;
 	private SpriteFont instruction3Label;
 	private SpriteFont instruction4Label;
-	private SpriteFont instructions5Label;
-	private SpriteFont instructions6Label;
+	private SpriteFont instruction5Label;
+	private SpriteFont instruction6Label;
 	private SpriteFont returnInstructionLabel;
+	
 	private Sprite soundSprite;
-	protected OptionsScreen optionsScreen;
+	
+	protected Player player;
+	
+	private KeyLocker keyLocker = new KeyLocker();
+	private Stopwatch keyTimer = new Stopwatch();
+	protected Stopwatch screenTimer = new Stopwatch();
+	
+	protected LevelClearedScreen levelClearedScreen;
+	protected LevelLoseScreen levelLoseScreen;
+	protected FinalLevelClearedScreen finalClearScreen;
+	
+	protected int levelNum = 0;
+	protected int catNum = 0;
 
-	public PlayLevelScreen(ScreenCoordinator screenCoordinator) {
-		
+	public PlayLevelScreen(ScreenCoordinator screenCoordinator) 
+	{
 		this.screenCoordinator = screenCoordinator;
 		this.playLevelScreenState = PlayLevelScreenState.RUNNING;
-		
 	}
 
-	public PlayLevelScreen(ScreenCoordinator screenCoordinator, PlayLevelScreenState state) {
+	public PlayLevelScreen(ScreenCoordinator screenCoordinator, PlayLevelScreenState state) 
+	{
 		this.screenCoordinator = screenCoordinator;
 		this.playLevelScreenState = state;
-
 	}
 
-	public void initialize() {
-
+	public void initialize() 
+	{
 		this.map = getCurrentMap();
 		map.reset();
 		System.out.println(levelNum);
@@ -80,22 +88,33 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		
 		pauseLabel = new SpriteFont("Pause", 350, 250, "Comic Sans", 30, Color.white);
 		
-
 		instructionLabel = new SpriteFont("To JUMP: UP arrow key, or 'W', or SPACEBAR", 130, 140, "Times New Roman", 20, Color.white);
-		instruction2Label = new SpriteFont("To MOVE LEFT: LEFT arrow key, or 'A'", 130, 180, "Times New Roman", 20, Color.white);
-		instruction3Label = new SpriteFont("To MOVE RIGHT: RIGHT arrow key, or 'D'", 130, 220, "Times New Roman", 20, Color.white);
-		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20, Color.white);
-		instructions5Label = new SpriteFont("To ATTACK: E key", 130, 300, "Times New Roman", 20, Color.white);
-        instructions6Label = new SpriteFont("To INTERACT: F key", 130, 340, "Times New Roman", 20, Color.white);
-		returnInstructionLabel = new SpriteFont("Press X to return", 20, 560, "Times New Roman", 20, Color.white);
 		instructionLabel.setOutlineColor(Color.white);
 		instructionLabel.setOutlineThickness(2.0f);
+		
+		instruction2Label = new SpriteFont("To MOVE LEFT: LEFT arrow key, or 'A'", 130, 180, "Times New Roman", 20, Color.white);
 		instruction2Label.setOutlineColor(Color.white);
 		instruction2Label.setOutlineThickness(2.0f);
+		
+		instruction3Label = new SpriteFont("To MOVE RIGHT: RIGHT arrow key, or 'D'", 130, 220, "Times New Roman", 20, Color.white);
 		instruction3Label.setOutlineColor(Color.white);
 		instruction3Label.setOutlineThickness(2.0f);
+		
+		instruction4Label = new SpriteFont("To CROUCH: DOWN arrow key, or 'S'", 130, 260, "Times New Roman", 20, Color.white);
 		instruction4Label.setOutlineColor(Color.white);
 		instruction4Label.setOutlineThickness(2.0f);
+		
+		instruction5Label = new SpriteFont("To ATTACK: E key", 130, 300, "Times New Roman", 20, Color.white);
+		instruction5Label.setOutlineColor(Color.white);
+		instruction5Label.setOutlineThickness(2.0f);
+		
+		instruction6Label = new SpriteFont("To INTERACT: F key", 130, 340, "Times New Roman", 20, Color.white);
+		instruction6Label.setOutlineColor(Color.white);
+		instruction6Label.setOutlineThickness(2.0f);
+
+		returnInstructionLabel = new SpriteFont("Press X to return to the menu", 5, 560, "Times New Roman", 30, Color.white);
+		returnInstructionLabel.setOutlineColor(Color.white);
+		returnInstructionLabel.setOutlineThickness(2.0f);
 		
 		soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 5, 532, 0.25f, ImageEffect.NONE);
 		
@@ -108,29 +127,37 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		keyTimer.setWaitTime(200);
 	}
 
-	public void update() {
+	public void update() 
+	{
 		// based on screen state, perform specific actions
-		switch (playLevelScreenState) {
+		switch (playLevelScreenState) 
+		{
+		
 		// if level is "running" update player and map to keep game logic for the
 		// platformer level going
-
 		case RUNNING:
-			if (Keyboard.isKeyDown(Key.P) && !keyLocker.isKeyLocked(Key.P)) {
+			if (Keyboard.isKeyDown(Key.P) && !keyLocker.isKeyLocked(Key.P)) 
+			{
 				playLevelScreenState = PlayLevelScreenState.PAUSE;
 				keyLocker.lockKey(Key.P);
 			} 
-			else if (Keyboard.isKeyDown(Key.X) && !keyLocker.isKeyLocked(Key.X)) {
+			else if (Keyboard.isKeyDown(Key.X) && !keyLocker.isKeyLocked(Key.X)) 
+			{
 				playLevelScreenState = PlayLevelScreenState.INSTRUCTIONS;
 				keyLocker.lockKey(Key.X);
-			} else {
+			} 
+			else 
+			{
 				player.update();
 				map.update(player);
 			}
 
-			if (Keyboard.isKeyUp(Key.P)) {
+			if (Keyboard.isKeyUp(Key.P)) 
+			{
 				keyLocker.unlockKey(Key.P);
 			}
-			if (Keyboard.isKeyUp(Key.X)) {
+			if (Keyboard.isKeyUp(Key.X)) 
+			{
 				keyLocker.unlockKey(Key.X);
 			}
 
@@ -153,20 +180,24 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			screenTimer.setWaitTime(2500);
 			playLevelScreenState = PlayLevelScreenState.LEVEL_WIN_MESSAGE;
 			break;
+			
 		// if level cleared screen is up and the timer is up for how long it should stay
 		// out, go back to main menu
 		case LEVEL_WIN_MESSAGE:
-			if (screenTimer.isTimeUp()) {
+			if (screenTimer.isTimeUp()) 
+			{
 				nextLevel();
 				playLevelScreenState = PlayLevelScreenState.RUNNING;
 			}
 			break;
+			
 		// if player died in level, bring up level lost screen
 		case PLAYER_DEAD:
 			levelLoseScreen = new LevelLoseScreen(this, screenCoordinator);
 			levelLoseScreen.initialize();
 			playLevelScreenState = PlayLevelScreenState.LEVEL_LOSE_MESSAGE;
 			break;
+			
 		// wait on level lose screen to make a decision (either resets level or sends
 		// player back to main menu)
 		case LEVEL_LOSE_MESSAGE:
@@ -179,58 +210,72 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			optionsScreen.update();
 			break;
 		case PAUSE:
-			if (Keyboard.isKeyDown(Key.P) && !keyLocker.isKeyLocked(Key.P)) {
+			if (Keyboard.isKeyDown(Key.P) && !keyLocker.isKeyLocked(Key.P)) 
+			{
 				playLevelScreenState = PlayLevelScreenState.RUNNING;
 				keyLocker.lockKey(Key.P);
-
 			}
-			if (Keyboard.isKeyUp(Key.P)) {
+			if (Keyboard.isKeyUp(Key.P)) 
+			{
 				keyLocker.unlockKey(Key.P);
 			}
 
 			break;
 		case INSTRUCTIONS:
-			if (Keyboard.isKeyDown(Key.X) && !keyLocker.isKeyLocked(Key.X)) {
+			if (Keyboard.isKeyDown(Key.X) && !keyLocker.isKeyLocked(Key.X)) 
+			{
 				playLevelScreenState = PlayLevelScreenState.RUNNING;
 				keyLocker.lockKey(Key.X);
-
 			}
-			if (Keyboard.isKeyUp(Key.X)) {
+			if (Keyboard.isKeyUp(Key.X)) 
+			{
 				keyLocker.unlockKey(Key.X);
 			}
 
 			break;
-
 		}
 		
 		/*
-		 * As of 10/26/21, OptionsScreen.java and PlayLevelScreen.java share the same
-		 * screen. If user is in the play level screen, the "M" key is used to mute. 
-		 * If user is in options screen, the mute feature is done by selecting the mute 
-		 * option.  
+		 * As of 11/4/21, OptionsScreen.java is part of PlayLevelScreen.java. If user 
+		 * is in the play level screen, the "M" key is used to mute. If user is in options 
+		 * screen, the mute feature is done by selecting the mute option.  
 		 */
-		if ((Keyboard.isKeyDown(Key.M) && keyTimer.isTimeUp()))
-        {
-        	keyTimer.reset();
-        	muteVolume();
-        } 
+		if (this.screenCoordinator.getGameState() == GameState.LEVEL) 
+		{
+			if ((Keyboard.isKeyDown(Key.M) && keyTimer.isTimeUp()))
+	        {
+	        	keyTimer.reset();
+	        	muteVolume();
+	        } 
+		}
 		
 		/*
-		 * As of 10/26/21, OptionsScreen.java and PlayLevelScreen.java share the same
-		 * screen. If user is in the play level screen, the sound icon appears in 
-		 * left-bottom corner. If user is in the options screen, the sound icon will
-		 * appear under the "Volume Control" label.
+		 * As of 11/9/21, OptionsScreen.java and InstructionScreen.java are part of 
+		 * PlayLevelScreen.java. If user is in the options screen, the sound icon appears 
+		 * under the "Volume Control" label. If the user is in instructions screen during
+		 * gameplay, the sound icon will appear in the specified location. Otherwise, it
+		 * will appear in the left-bottom corner.
 		 */
 		if (this.screenCoordinator.getGameState() == GameState.OPTIONS)
-        {
-        	soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 190, 170, 0.25f, ImageEffect.NONE);
-        }
+		{
+			soundSprite.setLocation(190, 170);
+		}
+		else if (this.getPlayLevelScreenState() == PlayLevelScreenState.INSTRUCTIONS)
+		{
+			soundSprite.setLocation(373, 532);
+		}
+		else
+		{
+			soundSprite.setLocation(5, 532);
+		}
 	}
 
 	@Override
-	public void draw(GraphicsHandler graphicsHandler) {
+	public void draw(GraphicsHandler graphicsHandler) 
+	{
 		// based on screen state, draw appropriate graphics
-		switch (playLevelScreenState) {
+		switch (playLevelScreenState) 
+		{
 		case RUNNING:
 		case LEVEL_COMPLETED:
 
@@ -274,8 +319,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 			instruction2Label.draw(graphicsHandler);
 			instruction3Label.draw(graphicsHandler);
 			instruction4Label.draw(graphicsHandler);
-			instructions5Label.draw(graphicsHandler);
-			instructions6Label.draw(graphicsHandler);
+			instruction5Label.draw(graphicsHandler);
+			instruction6Label.draw(graphicsHandler);
 			returnInstructionLabel.draw(graphicsHandler);
 
 			graphicsHandler.drawFilledRectangle(0, 0, ScreenManager.getScreenWidth(), ScreenManager.getScreenHeight(),
@@ -309,21 +354,25 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
     }
 
 
-	public PlayLevelScreenState getPlayLevelScreenState() {
+	public PlayLevelScreenState getPlayLevelScreenState() 
+	{
 		return playLevelScreenState;
 	}
 
 	@Override
-	public void onLevelCompleted() {
+	public void onLevelCompleted() 
+	{
 		playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
 	}
 
 	@Override
-	public void onDeath() {
+	public void onDeath() 
+	{
 		playLevelScreenState = PlayLevelScreenState.PLAYER_DEAD;
 	}
 
-	public Map getCurrentMap() {
+	public Map getCurrentMap() 
+	{
 		if (levelNum == 0) {
 			return new TestMap();
 		} else if (levelNum == 1) {
@@ -338,16 +387,19 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		}
 	}
 
-	public void resetLevel() {
+	public void resetLevel() 
+	{
 		playLevelScreenState = PlayLevelScreenState.RUNNING;
 		initialize();
 	}
 
-	public void goBackToMenu() {
+	public void goBackToMenu() 
+	{
 		screenCoordinator.setGameState(GameState.MENU);
 	}
 
-	public void nextLevel() {
+	public void nextLevel() 
+	{
 		levelNum++;
 		// Since there are only 5 levels, if the level number is 5 or higher, 
 		// all levels have been completed, so the main menu is loaded instead of the next level
@@ -359,40 +411,45 @@ public class PlayLevelScreen extends Screen implements PlayerListener {
 		}
 	}
 
-	public int getLevelNum() {
-
+	public int getLevelNum() 
+	{
 		return levelNum;
 	}
 
-	public void setLevelNum(int num) {
+	public void setLevelNum(int num) 
+	{
 		levelNum = num;
-
 	}
 
-	public void setPlayLevelScreenState(PlayLevelScreenState state) {
+	public void setPlayLevelScreenState(PlayLevelScreenState state) 
+	{
 		playLevelScreenState = state;
 	}
-	public Cat getCat() {
-		
-		if (catNum == 0) {
-			return new Cat("CatGreen.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-		} else if (catNum == 1) {
 	
+	public Cat getCat() 
+	{
+		if (catNum == 0) 
+		{
+			return new Cat("CatGreen.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
+		} 
+		else if (catNum == 1) 
+		{
 			return new Cat("CatBlue.png", map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-		}  else {
+		}  
+		else 
+		{
 			return new Cat("Cat.png",map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 		}
-		
 	}
 	
 	// This enum represents the different states this screen can be in
-	public enum PlayLevelScreenState {
+	public enum PlayLevelScreenState 
+	{
 		RUNNING, LEVEL_COMPLETED, PLAYER_DEAD, LEVEL_WIN_MESSAGE, LEVEL_LOSE_MESSAGE, LEVEL_SELECT, PAUSE, INSTRUCTIONS, OPTIONS
 	}
 
-	public void setCatNum(int i) {
+	public void setCatNum(int i) 
+	{
 		catNum = i;
-		
 	}
-
 }
