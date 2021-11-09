@@ -250,23 +250,23 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 		}
 		
 		/*
-		 * As of 11/4/21, OptionsScreen.java is part of PlayLevelScreen.java. If user 
-		 * is in the play level screen, the sound icon appears in left-bottom corner. 
-		 * If user is in the options screen, the sound icon will appear under the 
-		 * "Volume Control" label.
+		 * As of 11/9/21, OptionsScreen.java and InstructionScreen.java are part of 
+		 * PlayLevelScreen.java. If user is in the options screen, the sound icon appears 
+		 * under the "Volume Control" label. If the user is in instructions screen during
+		 * gameplay, the sound icon will appear in the specified location. Otherwise, it
+		 * will appear in the left-bottom corner.
 		 */
 		if (this.screenCoordinator.getGameState() == GameState.OPTIONS)
-        {
-        	soundSprite = new Sprite(ImageLoader.load(Config.VOLUME_SPRITE), 190, 170, 0.25f, ImageEffect.NONE);
-        }
-		
-		/*
-		 * If the player pulls up the instructions during play, the mute sprite will move
-		 * to the specified location on screen.
-		 */
-		if (this.getPlayLevelScreenState() == PlayLevelScreenState.INSTRUCTIONS)
+		{
+			soundSprite.setLocation(190, 170);
+		}
+		else if (this.getPlayLevelScreenState() == PlayLevelScreenState.INSTRUCTIONS)
 		{
 			soundSprite.setLocation(373, 532);
+		}
+		else
+		{
+			soundSprite.setLocation(5, 532);
 		}
 	}
 
