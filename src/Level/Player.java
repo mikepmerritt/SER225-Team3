@@ -333,18 +333,16 @@ public abstract class Player extends GameObject
         }
     }
     
-    public void playerAttacking() 
-    {
-    	if (playerState == PlayerState.ATTACKING) 
-    	{
-    		// Define where projectile will spawn on map (x location) relative to cat's location
+    // 11/19
+    public void playerAttacking() {
+    	if (playerState == PlayerState.ATTACKING) {
+    		// define where projectile will spawn on map (x location) relative to cat's location
             // and define its movement speed
             int attackX;
             float movementSpeed;
-            
             if (facingDirection == Direction.RIGHT) 
             {
-            	attackX = Math.round(getX()) + getScaledWidth();
+            	attackX = Math.round(getX()) + getScaledWidth() - 20;
                 movementSpeed = 1.5f;
             } 
             else 
@@ -353,20 +351,20 @@ public abstract class Player extends GameObject
                 movementSpeed = -1.5f;
             }
 
-                // Define where projectile will spawn on the map (y location) relative to dinosaur enemy's location
-                int attackY = Math.round(getY()) + 4;
+            // define where projectile will spawn on the map (y location) relative to cat's location
+            int attackY = Math.round(getY() + 25);
 
-                // Create projectile
-                PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
-                currentProjectile = projectile;
+            // Create projectile
+            PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
+            currentProjectile = projectile;
 
-                // Add projectile enemy to the map for it to offically spawn in the level
-                map.addEnemy(projectile);
-                
-                // Is key up
-                if (Keyboard.isKeyUp(attackKey)) {
-                	playerState = PlayerState.STANDING;
-                }
+            // Add projectile enemy to the map for it to offically spawn in the level
+            map.addEnemy(projectile);
+            
+            // Is key up
+            if (Keyboard.isKeyUp(attackKey)) {
+            	playerState = PlayerState.STANDING;
+            }
          }
     }
 
