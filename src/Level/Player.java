@@ -314,15 +314,15 @@ public abstract class Player extends GameObject {
                 int attackX;
                 float movementSpeed;
                 if (facingDirection == Direction.RIGHT) {
-                	attackX = Math.round(getX()) + getScaledWidth();
+                	attackX = Math.round(getX()) + getScaledWidth() - 20;
                     movementSpeed = 1.5f;
                 } else {
                 	attackX = Math.round(getX());
                     movementSpeed = -1.5f;
                 }
 
-                // define where projectile will spawn on the map (y location) relative to dinosaur enemy's location
-                int attackY = Math.round(getY()) + 4;
+                // define where projectile will spawn on the map (y location) relative to cat's location
+                int attackY = Math.round(getY() + 20);
 
                 // create projectile
                 PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
