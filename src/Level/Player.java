@@ -322,7 +322,7 @@ public abstract class Player extends GameObject {
                 }
 
                 // define where projectile will spawn on the map (y location) relative to cat's location
-                int attackY = Math.round(getY() + 20);
+                int attackY = Math.round(getY() + 25);
 
                 // create projectile
                 PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
