@@ -308,13 +308,12 @@ public abstract class Player extends GameObject
                 currentAnimationName = facingDirection == Direction.RIGHT ? "FALL_RIGHT" : "FALL_LEFT";
             }
 
-            // Allows you to move left and right while in the air
-            if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(leftKey)) 
-            {
+            // allows you to move left and right while in the air
+            if (Keyboard.isKeyDown(MOVE_LEFT_KEY) || Keyboard.isKeyDown(leftKey)) {
+                facingDirection = Direction.LEFT;
                 moveAmountX -= walkSpeed;
-            } 
-            else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey)) 
-            {
+            } else if (Keyboard.isKeyDown(MOVE_RIGHT_KEY) || Keyboard.isKeyDown(rightKey)) {
+                facingDirection = Direction.RIGHT;
                 moveAmountX += walkSpeed;
             }
 
@@ -336,20 +335,28 @@ public abstract class Player extends GameObject
     // 11/19
     public void playerAttacking() {
     	if (playerState == PlayerState.ATTACKING) {
-    		// define where projectile will spawn on map (x location) relative to cat's location
-            // and define its movement speed
-            int attackX;
-            float movementSpeed;
-            if (facingDirection == Direction.RIGHT) 
-            {
-            	attackX = Math.round(getX()) + getScaledWidth() - 20;
-                movementSpeed = 1.5f;
-            } 
-            else 
-            {
-            	attackX = Math.round(getX());
-                movementSpeed = -1.5f;
-            }
+      
+                // define where projectile will spawn on map (x location) relative to cat's location
+                // and define its movement speed
+                
+                //Checks if you're walking before attacking and fixes the cat sprite animation to go back to standing.
+                if(currentAnimationName == "WALK_RIGHT"){
+                    currentAnimationName = "STAND_RIGHT";
+                }
+
+                if(currentAnimationName == "WALK_LEFT"){
+                    currentAnimationName = "STAND_LEFT";
+                }
+                
+                int attackX;
+                float movementSpeed;
+                if (facingDirection == Direction.RIGHT) {
+                	attackX = Math.round(getX()) + getScaledWidth() - 20;
+                    movementSpeed = 1.5f;
+                } else {
+                	attackX = Math.round(getX());
+                    movementSpeed = -1.5f;
+                }
 
             // define where projectile will spawn on the map (y location) relative to cat's location
             int attackY = Math.round(getY() + 25);
