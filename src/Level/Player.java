@@ -65,6 +65,8 @@ public abstract class Player extends GameObject
     // jump mechanics
     protected Stopwatch jumpTimer = new Stopwatch();
     protected boolean canJump = true;
+    // attack mechanics
+    protected boolean canShoot = true;
 
     // If true, player cannot be hurt by enemies (good for testing)
     protected boolean isInvincible = false;
@@ -259,13 +261,18 @@ public abstract class Player extends GameObject
         }
     }
 
-    // Player JUMPING state logic
-    protected void playerJumping() 
-    {
-        // If last frame player was on ground and this frame player is still on ground, the jump needs to be setup
-        if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) 
-        {
-            // Sets animation to a JUMP animation based on which way player is facing
+    // player JUMPING state logic
+    protected void playerJumping() {
+    	if(Keyboard.isKeyDown(attackKey)) {
+    		playerAirAttacking();
+    	}
+    	else if (Keyboard.isKeyUp(attackKey)){
+    		canShoot = true;
+    	}
+        // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
+        if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
+
+            // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
 
             // player is set to be in air and then player is sent into the air
@@ -281,7 +288,6 @@ public abstract class Player extends GameObject
                 }
             }
         }
-
         // if player is in air (currently in a jump) and has more jumpForce, continue sending player upwards
         else if (airGroundState == AirGroundState.AIR) {
         	if((Keyboard.isKeyDown(spaceKey) || Keyboard.isKeyDown(JUMP_KEY) || Keyboard.isKeyDown(upKey)) && jumpTimer.isTimeUp() && canJump) {
@@ -323,12 +329,36 @@ public abstract class Player extends GameObject
                 increaseMomentum();
             }
         }
-
-        // If player last frame was in air and this frame is now on ground, player enters STANDING state
-        else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) 
-        {
+        // if player last frame was in air and this frame is now on ground, player enters STANDING state
+        else if (previousAirGroundState == AirGroundState.AIR && airGroundState == AirGroundState.GROUND) {
             playerState = PlayerState.STANDING;
+            canShoot = true;
             canJump = true;
+        }
+    }
+    
+    public void playerAirAttacking() {
+    	int attackX;
+        float movementSpeed;
+        if (facingDirection == Direction.RIGHT) {
+        	attackX = Math.round(getX()) + getScaledWidth() - 20;
+            movementSpeed = 1.5f;
+        } else {
+        	attackX = Math.round(getX());
+            movementSpeed = -1.5f;
+        }
+
+        // define where projectile will spawn on the map (y location) relative to dinosaur enemy's location
+        int attackY = Math.round(getY() + 25);
+
+        // create projectile
+        PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
+        currentProjectile = projectile;
+
+        // add projectile enemy to the map for it to offically spawn in the level
+        if(canShoot) {
+        	map.addEnemy(projectile);
+        	canShoot = false;
         }
     }
     
@@ -365,15 +395,19 @@ public abstract class Player extends GameObject
             PlayerAttack projectile = new PlayerAttack(new Point(attackX, attackY), movementSpeed, 1000);
             currentProjectile = projectile;
 
-            // Add projectile enemy to the map for it to offically spawn in the level
-            map.addEnemy(projectile);
-            
-            // Is key up
-            if (Keyboard.isKeyUp(attackKey)) {
-            	playerState = PlayerState.STANDING;
+                // add projectile enemy to the map for it to offically spawn in the level
+                if(canShoot) {
+                	map.addEnemy(projectile);
+                	canShoot = false;
+                }
+                
+                //is key up
+                if (Keyboard.isKeyUp(attackKey)) {
+                	playerState = PlayerState.STANDING;
+                	canShoot = true;
+                }
             }
          }
-    }
 
     // While player is in air, this is called, and will increase momentumY by a set amount until player reaches terminal velocity
     protected void increaseMomentum() 
