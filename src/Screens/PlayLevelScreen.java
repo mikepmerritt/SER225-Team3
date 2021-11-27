@@ -23,6 +23,7 @@ import Maps.TestMap2;
 import Maps.TestMap3;
 import Maps.TestMap4;
 import Maps.TestMap5;
+import Maps.TestMap7;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
@@ -165,8 +166,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 		// if level has been completed, bring up level cleared screen
 		case LEVEL_COMPLETED:
 			// Check to see if the level number is less than the index of the last level
-			// In this case, the last level is 5, which has an index of 4.
-			if(levelNum < 4)
+			// In this case, the last level is 9, which has an index of 8.
+			if(levelNum < 8)
 			{
 				levelClearedScreen = new LevelClearedScreen();
 				levelClearedScreen.initialize();
@@ -285,8 +286,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 			break;
 		case LEVEL_WIN_MESSAGE:
 			// Check to see if the level number is less than the index of the last level
-			// In this case, the last level is 5, which has an index of 4.
-			if(levelNum < 4)
+			// In this case, the last level is 9, which has an index of 8.
+			if(levelNum < 8)
 			{
 				levelClearedScreen.draw(graphicsHandler);
 			}
@@ -381,9 +382,14 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 			return new TestMap3();
 		} else if (levelNum == 3) {
 			return new TestMap4();
-
-		} else {
+		} else if (levelNum == 4) {
 			return new TestMap5();
+		} else if (levelNum == 6) {
+			return new TestMap7();
+		} 
+		// TODO: delete these lines on merge.
+		else {
+			return new TestMap7();
 		}
 	}
 
@@ -401,9 +407,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 	public void nextLevel() 
 	{
 		levelNum++;
-		// Since there are only 5 levels, if the level number is 5 or higher, 
+		// Since there are only 9 levels, if the level number is 9 or higher, 
 		// all levels have been completed, so the main menu is loaded instead of the next level
-		if (levelNum < 5) {
+		if (levelNum < 9) {
 			initialize();
 		}
 		else {
