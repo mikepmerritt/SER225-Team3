@@ -24,6 +24,7 @@ import Maps.TestMap3;
 import Maps.TestMap4;
 import Maps.TestMap5;
 import Maps.TestMap8;
+import Maps.TestMap9;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
@@ -386,10 +387,12 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 			return new TestMap3();
 		} else if (levelNum == 3) {
 			return new TestMap4();
+		} else if (levelNum == 4){
+      return new TestMap5();
 		} else if (levelNum == 7){
 			return new TestMap8();
 		} else {
-			return new TestMap5();
+			return new TestMap9();
 		}
 	}
 
@@ -408,9 +411,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 	public void nextLevel() 
 	{
 		levelNum++;
-		// Since there are only 5 levels, if the level number is 5 or higher, 
+		// Since there are only 9 levels, if the level number is 9 or higher, 
 		// all levels have been completed, so the main menu is loaded instead of the next level
-		if (levelNum < 5) {
+		if (levelNum < 9) {
 			initialize();
 		}
 		else {
