@@ -23,6 +23,7 @@ import Maps.TestMap2;
 import Maps.TestMap3;
 import Maps.TestMap4;
 import Maps.TestMap5;
+import Maps.TestMap8;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
@@ -125,10 +126,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 		this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 
 		keyTimer.setWaitTime(200);
-
-		if(getPlayLevelScreenState() == PlayLevelScreenState.RUNNING){
-			GamePanel.music("src/gaming.wav", Config.VOLUME);
-		}
 	}
 
 	public void update() 
@@ -386,7 +383,9 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 		} else if (levelNum == 3) {
 			return new TestMap4();
 
-		} else {
+		} else if (levelNum == 7){
+			return new TestMap8();
+		}else {
 			return new TestMap5();
 		}
 	}
@@ -400,7 +399,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 	public void goBackToMenu() 
 	{
 		screenCoordinator.setGameState(GameState.MENU);
-		GamePanel.music("src/title screen.wav", Config.VOLUME);
 	}
 
 	public void nextLevel() 
