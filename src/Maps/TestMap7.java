@@ -15,17 +15,18 @@ import Utils.Point;
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
-public class TestMap4 extends Map {
+public class TestMap7 extends Map {
 
-    public TestMap4() {
-        super("test_map4.txt", new CommonTileset(), new Point(1, 11));
+    public TestMap7() {
+        super("test_map7.txt", new CommonTileset(), new Point(1, 11));
     }
 
     @Override
     public ArrayList<Enemy> loadEnemies() {
         ArrayList<Enemy> enemies = new ArrayList<>();
-        enemies.add(new BugEnemy(getPositionByTileIndex(16, 9), Direction.LEFT));
-        enemies.add(new DinosaurEnemy(getPositionByTileIndex(19, 1).addY(2), getPositionByTileIndex(22, 1).addY(2), Direction.RIGHT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(6, 4), Direction.LEFT));
+        enemies.add(new BugEnemy(getPositionByTileIndex(14, 7), Direction.LEFT));
+        enemies.add(new DinosaurEnemy(getPositionByTileIndex(19, 4), getPositionByTileIndex(21, 4), Direction.RIGHT));
         return enemies;
     }
 
@@ -35,8 +36,8 @@ public class TestMap4 extends Map {
 
         enhancedMapTiles.add(new HorizontalMovingPlatform(
                 ImageLoader.load("GreenPlatform.png"),
-                getPositionByTileIndex(24, 6),
-                getPositionByTileIndex(27, 6),
+                getPositionByTileIndex(22, 10),
+                getPositionByTileIndex(25, 10),
                 TileType.JUMP_THROUGH_PLATFORM,
                 3,
                 new Rectangle(0, 6,16,4),
