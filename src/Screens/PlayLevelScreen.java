@@ -381,7 +381,8 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 			return new TestMap3();
 		} else if (levelNum == 3) {
 			return new TestMap4();
-
+		} else if (levelNum == 7){
+			return new TestMap8();
 		} else {
 			return new TestMap5();
 		}
