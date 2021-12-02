@@ -23,6 +23,7 @@ import Maps.TestMap2;
 import Maps.TestMap3;
 import Maps.TestMap4;
 import Maps.TestMap5;
+import Maps.TestMap6;
 import Maps.TestMap8;
 import Maps.TestMap9;
 import Players.Cat;
@@ -387,8 +388,10 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 			return new TestMap3();
 		} else if (levelNum == 3) {
 			return new TestMap4();
-		} else if (levelNum == 4){
-      return new TestMap5();
+		} else if (levelNum == 4) {
+			return new TestMap5();
+		} else if (levelNum == 5) {
+			return new TestMap6();
 		} else if (levelNum == 7){
 			return new TestMap8();
 		} else {
