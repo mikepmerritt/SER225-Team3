@@ -125,10 +125,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 		this.player.setLocation(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
 
 		keyTimer.setWaitTime(200);
-
-		if(getPlayLevelScreenState() == PlayLevelScreenState.RUNNING){
-			GamePanel.music("src/gaming.wav", Config.VOLUME);
-		}
 	}
 
 	public void update() 
@@ -400,7 +396,6 @@ public class PlayLevelScreen extends Screen implements PlayerListener
 	public void goBackToMenu() 
 	{
 		screenCoordinator.setGameState(GameState.MENU);
-		GamePanel.music("src/title screen.wav", Config.VOLUME);
 	}
 
 	public void nextLevel() 

@@ -44,7 +44,6 @@ public class GamePanel extends JPanel {
 	protected static GameWindow gameWindow;
 	private static ScreenCoordinator coordinator;
 	public static Clip clip;
-	private static boolean playingMusic = false;
 
 	
 	/*
@@ -95,9 +94,6 @@ public class GamePanel extends JPanel {
 	public static void music(String filepath, double gain) {
 	
 		try {
-			if(playingMusic){
-				clip.stop();
-			}
 			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filepath));
 			clip = AudioSystem.getClip();
 			clip.open(audioInput);
@@ -106,7 +102,7 @@ public class GamePanel extends JPanel {
 	
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			
-			playingMusic = true;
+			
 
 		} catch (Exception ex) {
 			System.out.println("No audio found!");
@@ -157,7 +153,7 @@ public class GamePanel extends JPanel {
 	{
 		timer.start();
 
-		music("src/title screen.wav", Config.VOLUME);
+		music("src/Blossoming Inspiration Loop (online-audio-converter.com).wav", Config.VOLUME);
 	}
 
 	public ScreenManager getScreenManager() {
