@@ -23,6 +23,7 @@ import Maps.TestMap2;
 import Maps.TestMap3;
 import Maps.TestMap4;
 import Maps.TestMap5;
+import Maps.TestMap8;
 import Players.Cat;
 import SpriteFont.SpriteFont;
 import Utils.Stopwatch;
