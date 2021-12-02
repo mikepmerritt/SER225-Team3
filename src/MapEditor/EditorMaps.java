@@ -7,9 +7,11 @@ import Maps.TestMap2;
 import Maps.TestMap3;
 import Maps.TestMap4;
 import Maps.TestMap5;
+import Maps.TestMap6;
 import Maps.TestMap7;
+import Maps.TestMap8;
+import Maps.TestMap9;
 import Maps.TitleScreenMap;
-
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -22,7 +24,10 @@ public class EditorMaps {
             add("TestMap3");
             add("TestMap4");
             add("TestMap5");
+            add("TestMap6");
             add("TestMap7");
+            add("TestMap8");
+            add("TestMap9");
             
         }};
     }
@@ -41,8 +46,14 @@ public class EditorMaps {
             	return new TestMap4();
             case "TestMap5":
             	return new TestMap5();
+            case "TestMap6":
+            	return new TestMap6();
             case "TestMap7":
             	return new TestMap7();
+            case "TestMap8":
+              return new TestMap8();
+            case "TestMap9":
+            	return new TestMap9();
             case "LevelSelect":
             	return new LevelSelectMap();
             default:

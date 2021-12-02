@@ -1,5 +1,6 @@
 package Level;
 
+import Engine.Config;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
@@ -11,7 +12,13 @@ import Utils.Direction;
 import Utils.Point;
 import Utils.Stopwatch;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 import Enemies.Fireball;
 import Enemies.DinosaurEnemy.DinosaurState;
@@ -72,6 +79,8 @@ public abstract class Player extends GameObject
     protected boolean isInvincible = false;
     
 	protected PlayerAttack currentProjectile;
+	
+	public static Clip clip;
 
     public Player(SpriteSheet spriteSheet, float x, float y, String startingAnimationName) 
     {
@@ -271,6 +280,7 @@ public abstract class Player extends GameObject
     	}
         // if last frame player was on ground and this frame player is still on ground, the jump needs to be setup
         if (previousAirGroundState == AirGroundState.GROUND && airGroundState == AirGroundState.GROUND) {
+        	playSound("src/jump.wav", Config.VOLUME); // play jump sound effect
 
             // sets animation to a JUMP animation based on which way player is facing
             currentAnimationName = facingDirection == Direction.RIGHT ? "JUMP_RIGHT" : "JUMP_LEFT";
@@ -358,6 +368,7 @@ public abstract class Player extends GameObject
         // add projectile enemy to the map for it to offically spawn in the level
         if(canShoot) {
         	map.addEnemy(projectile);
+        	playSound("src/attack.wav", Config.VOLUME); // play attack sound effect
         	canShoot = false;
         }
     }
@@ -398,6 +409,7 @@ public abstract class Player extends GameObject
                 // add projectile enemy to the map for it to offically spawn in the level
                 if(canShoot) {
                 	map.addEnemy(projectile);
+                	playSound("src/attack.wav", Config.VOLUME); // play attack sound effect
                 	canShoot = false;
                 }
                 
@@ -571,9 +583,11 @@ public abstract class Player extends GameObject
     // If player has died, this will be the update cycle
     public void updatePlayerDead() 
     {
-        // Change player animation to DEATH
+        // Play death sound effect and change player animation to DEATH 
         if (!currentAnimationName.startsWith("DEATH")) 
         {
+        	playSound("src/die.wav", Config.VOLUME);
+        	
             if (facingDirection == Direction.RIGHT) 
             {
                 currentAnimationName = "DEATH_RIGHT";
@@ -643,4 +657,30 @@ public abstract class Player extends GameObject
     {
         listeners.add(listener);
     } 
+    
+    // find and play audio clip of a given file name
+    // implementation is the same as the music but without the looping
+    public static void playSound(String filepath, double gain) {
+    	
+		try {
+			AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filepath));
+			clip = AudioSystem.getClip();
+			clip.open(audioInput);
+			setVolume(gain);
+			clip.start();
+		} catch (Exception ex) {
+			System.out.println("No audio found!");
+			ex.printStackTrace();
+
+		}
+		
+	}
+    
+    // same as method for the music, needed for playSound to function
+    public static void setVolume(double gain) {
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+		gainControl.setValue(dB);
+		
+	}
 }
